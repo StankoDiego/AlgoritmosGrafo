@@ -15,6 +15,15 @@ public class Grafo {
 	public Grafo(String path) {
 		FileManager.leerArchivo(path, this);
 	}
+	
+	public void mostrarMatriz() {
+		for (int i = 0; i < adyacencia.length; i++) {
+			for (int j = 0; j < adyacencia.length; j++) {
+				System.out.print(this.adyacencia[i][j] + " ");
+			}
+			System.out.println();
+		}
+	}
 
 	public void recorridoAnchura(int nodoOrigen) {
 		ArrayList<Integer> visitado = new ArrayList<Integer>();

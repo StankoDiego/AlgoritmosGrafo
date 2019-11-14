@@ -23,8 +23,17 @@ public class FileManager {
 
 		int[][] m = new int[grafo.getCantVertices()][grafo.getCantVertices()];
 
+		for (int i = 0; i < m.length; i++) {
+			for (int j = 0; j < m.length; j++) {
+				m[i][j] = Integer.MAX_VALUE;
+			}
+		}
+
 		for (int i = 0; i < grafo.getCantAristas(); i++) {
-			m[sc.nextInt()][sc.nextInt()] = sc.nextInt();
+			int fila = sc.nextInt();
+			int columna = sc.nextInt();
+			int valor = sc.nextInt();
+			m[fila - 1][columna - 1] = valor;
 		}
 
 		grafo.setAdyacencia(m);

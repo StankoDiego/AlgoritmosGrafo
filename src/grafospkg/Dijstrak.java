@@ -6,10 +6,10 @@ public class Dijstrak {
 
 	private int[] predecesores;
 	private int[] distancia;
-	ArrayList<Integer> visitados;
-	ArrayList<Integer> restantes;
-	Grafo grafo;
-	int nodoOrigen;
+	private ArrayList<Integer> visitados;
+	private ArrayList<Integer> restantes;
+	private Grafo grafo;
+	private int nodoOrigen;
 
 	public Dijstrak(int nodoOrigen, Grafo grafo) {
 		this.nodoOrigen = nodoOrigen;
@@ -17,14 +17,14 @@ public class Dijstrak {
 		this.predecesores = new int[grafo.getCantVertices()];
 
 		this.visitados = new ArrayList<Integer>();
-		this.distancia = new int[grafo.getCantAristas()];
+		this.distancia = new int[grafo.getCantVertices()];
 		this.restantes = new ArrayList<Integer>();
 
 		visitados.add(nodoOrigen);
 		inicializarElementos(nodoOrigen, restantes, predecesores, distancia);
 	}
 
-	public void inicializarElementos(int nodoOrigen, ArrayList<Integer> restantes, int[] predecesores,
+	private void inicializarElementos(int nodoOrigen, ArrayList<Integer> restantes, int[] predecesores,
 			int[] distancia) {
 
 		for (int i = 0; i < grafo.getCantVertices(); i++) {
@@ -35,25 +35,48 @@ public class Dijstrak {
 		}
 	}
 
-	public void RecorridoDijstrak() {
+	public void recorridoDijstrak() {
 
 		for (int i = 0; i < grafo.getCantVertices(); i++) {
 
-			int pos = buscarMinimo(restantes, distancia);
-			int nodoMinimo = restantes.get(pos);
-			visitados.add(nodoMinimo);
-			restantes.remove(pos);
+			// BUSCO EL MINIMO EN RESTANTES
+			int nodoMinimo = buscarMinimo(restantes, distancia);
 
-			if (pos != -1) {
+			if (nodoMinimo != -1) {
+				// SI SE ENCONTRO
+				visitados.add(nodoMinimo);
+				restantes.remove(restantes.indexOf(nodoMinimo));
 
+				// POR CADA RESTANTE
+				for (Integer x : restantes) {
+
+					if (this.grafo.getAdyacencia()[i][x] != Integer.MAX_VALUE) {
+						// Calculo el costo de un intermedio
+						int aux = this.grafo.getAdyacencia()[nodoMinimo][x] + distancia[nodoMinimo];
+						if (aux < distancia[x]) {
+							distancia[x] = aux;
+							predecesores[x] = nodoMinimo;
+						}
+					}
+				}
 			}
-
 		}
 
 	}
 
-	private int buscarMinimo(ArrayList<Integer> restantes2, int[] distancia) {
-		return 0;
+	private int buscarMinimo(ArrayList<Integer> restantes, int[] distancia) {
+		int pos = -1;
+		int minimo = Integer.MAX_VALUE;
+
+		for (int restante : restantes) {
+
+			if (distancia[restante] != Integer.MAX_VALUE && distancia[restante] < minimo) {
+				minimo = distancia[restante];
+				pos = restante;
+			}
+		}
+
+		return pos;
 	}
 
 }
