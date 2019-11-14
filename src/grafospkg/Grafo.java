@@ -3,8 +3,9 @@ package grafospkg;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
-public abstract class Grafo {
+public class Grafo {
 
 	private int cantVertices;
 	private int cantAristas;
@@ -15,7 +16,7 @@ public abstract class Grafo {
 		FileManager.leerArchivo(path, this);
 	}
 
-	public int[] bfs(int nodoOrigen) {
+	public void recorridoAnchura(int nodoOrigen) {
 		ArrayList<Integer> visitado = new ArrayList<Integer>();
 		Queue<Integer> cola = new LinkedList<Integer>();
 
@@ -39,9 +40,26 @@ public abstract class Grafo {
 				}
 			}
 		}
+	}
 
+	public void recorridoProfundidad(int nodoOrigen) {
 
-		return distancia;
+		Stack<Integer> pila = new Stack<Integer>();
+		ArrayList<Integer> visitados = new ArrayList<Integer>();
+		visitados.add(nodoOrigen);
+		pila.push(nodoOrigen);
+
+		while (!pila.isEmpty()) {
+			int nodoActual = pila.pop();
+			System.out.println(nodoActual + " ");
+
+			for (int i = 0; i < adyacencia.length; i++) {
+				if (!visitados.contains(i) && this.adyacencia[nodoActual][i] != Integer.MAX_VALUE) {
+					visitados.add(i);
+					pila.push(i);
+				}
+			}
+		}
 	}
 
 	private void inicializarVectores(int[] distancia) {
