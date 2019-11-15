@@ -38,23 +38,19 @@ public class Dijstrak {
 	public void recorridoDijstrak() {
 
 		for (int i = 0; i < grafo.getCantVertices(); i++) {
-
 			// BUSCO EL MINIMO EN RESTANTES
 			int nodoMinimo = buscarMinimo(restantes, distancia);
-
 			if (nodoMinimo != -1) {
 				// SI SE ENCONTRO
 				visitados.add(nodoMinimo);
 				restantes.remove(restantes.indexOf(nodoMinimo));
-
 				// POR CADA RESTANTE
 				for (Integer x : restantes) {
-
-					if (this.grafo.getAdyacencia()[i][x] != Integer.MAX_VALUE) {
+					if (this.grafo.getAdyacencia()[nodoMinimo][x] != Integer.MAX_VALUE) {
 						// Calculo el costo de un intermedio
-						int aux = this.grafo.getAdyacencia()[nodoMinimo][x] + distancia[nodoMinimo];
-						if (aux < distancia[x]) {
-							distancia[x] = aux;
+						int costoIntermedio = this.grafo.getAdyacencia()[nodoMinimo][x] + distancia[nodoMinimo];
+						if (costoIntermedio < distancia[x]) {
+							distancia[x] = costoIntermedio;
 							predecesores[x] = nodoMinimo;
 						}
 					}
@@ -62,6 +58,7 @@ public class Dijstrak {
 			}
 		}
 
+		armarCamino();
 	}
 
 	private int buscarMinimo(ArrayList<Integer> restantes, int[] distancia) {
@@ -69,14 +66,22 @@ public class Dijstrak {
 		int minimo = Integer.MAX_VALUE;
 
 		for (int restante : restantes) {
-
 			if (distancia[restante] != Integer.MAX_VALUE && distancia[restante] < minimo) {
 				minimo = distancia[restante];
 				pos = restante;
 			}
 		}
-
 		return pos;
+	}
+
+	private void armarCamino() {
+
+		System.out.print(predecesores.length + " ");
+		int i = this.predecesores.length - 1;
+		while (i != this.nodoOrigen) {
+			System.out.print(this.predecesores[i] + 1 + " ");
+			i = this.predecesores[i];
+		}
 	}
 
 }

@@ -15,11 +15,26 @@ public class Grafo {
 	public Grafo(String path) {
 		FileManager.leerArchivo(path, this);
 	}
-	
+
+	public void espejarMatriz() {
+
+		for (int f = 0; f < adyacencia.length; f++) {
+			for (int c = 0; c < adyacencia.length; c++) {
+				if (this.adyacencia[c][f] == Integer.MAX_VALUE) {
+					adyacencia[c][f] = adyacencia[f][c];
+				}
+			}
+		}
+	}
+
 	public void mostrarMatriz() {
 		for (int i = 0; i < adyacencia.length; i++) {
 			for (int j = 0; j < adyacencia.length; j++) {
-				System.out.print(this.adyacencia[i][j] + " ");
+				if (this.adyacencia[i][j] == Integer.MAX_VALUE) {
+					System.out.print("-1" + "|" + " ");
+				} else {
+					System.out.print(this.adyacencia[i][j] + "|" + " ");
+				}
 			}
 			System.out.println();
 		}
